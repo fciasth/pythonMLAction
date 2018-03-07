@@ -24,6 +24,7 @@ def classify0(inX,dataSet,labels,k):
         #还用到了dict.get(key, default=None)函数，key就是dict中的键voteIlabel，如果不存在则返回一个0并存入dict，如果存在则读取当前值并+1；
         classCount[voteIlabel] = classCount.get(voteIlabel, 0) + 1
 
+
     sortedClassCount = sorted(classCount.items(), key=operator.itemgetter(1), reverse=True)
     return sortedClassCount[0][0]
 group,lables = createDataSet()
