@@ -76,3 +76,24 @@ def datingClassTest():
     print("the total error rate is: %f"%(errorCount/float(numTestVecs)))
 #测试
 #datingClassTest()
+def classifyPerson():
+    resultList = ['一点也不喜欢','有一点喜欢','很大程度喜欢']
+    percentTats = float(input("玩游戏所占时间的百分比?"))
+    ffMiles = float(input("每年获得的飞行常客里程数?"))
+    iceCream = float(input("每周消费的冰淇淋公升数?"))
+    datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')
+    normMat,minVals,ranges1  = autoNorm(datingDataMat)
+    inArr = array([ffMiles,percentTats,iceCream])
+    classifierResult = classify0((inArr - minVals) / ranges1, normMat, datingLabels, 3)
+    print("你可能喜欢这样的人:",resultList[classifierResult-1])
+# def classifyPerson():
+#     resultList = ['not at all', 'in small doses', 'in large doses']
+#     percentTats = float(input("percentage of time spent playing video games?"))
+#     ffMiles = float(input("frequent flier miles earned per year?"))
+#     iceCream = float(input("liters of ice cream consumed per year?"))
+#     datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')
+#     normMat, ranges1, minVals = autoNorm(datingDataMat)
+#     inArr = array([ffMiles, percentTats, iceCream, ])
+#     classifierResult = classify0((inArr - minVals)/ranges1, normMat, datingLabels, 3)
+#     print ("You will probably like this person: %s" % resultList[classifierResult - 1])
+classifyPerson()
