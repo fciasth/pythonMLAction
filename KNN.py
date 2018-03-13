@@ -86,14 +86,18 @@ def classifyPerson():
     inArr = array([ffMiles,percentTats,iceCream])
     classifierResult = classify0((inArr - minVals) / ranges1, normMat, datingLabels, 3)
     print("你可能喜欢这样的人:",resultList[classifierResult-1])
-# def classifyPerson():
-#     resultList = ['not at all', 'in small doses', 'in large doses']
-#     percentTats = float(input("percentage of time spent playing video games?"))
-#     ffMiles = float(input("frequent flier miles earned per year?"))
-#     iceCream = float(input("liters of ice cream consumed per year?"))
-#     datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')
-#     normMat, ranges1, minVals = autoNorm(datingDataMat)
-#     inArr = array([ffMiles, percentTats, iceCream, ])
-#     classifierResult = classify0((inArr - minVals)/ranges1, normMat, datingLabels, 3)
-#     print ("You will probably like this person: %s" % resultList[classifierResult - 1])
-classifyPerson()
+# 测试
+# classifyPerson()
+
+#准备数据：将图像转换为测试向量
+def img2vector(filename):
+    returnVect = zeros((1,1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        for j in range(32):
+            returnVect[0,32*i+j] = int(lineStr[j])
+    return returnVect
+#测试
+# testVector = img2vector('testDigits/0_13.txt')
+# print(testVector[0,0:31])
