@@ -27,12 +27,36 @@ def classify0(inX,dataSet,labels,k):
 
     sortedClassCount = sorted(classCount.items(), key=operator.itemgetter(1), reverse=True)
     return sortedClassCount[0][0]
+#测试
+# group,lables = createDataSet()
+# print (classify0([0,0],group,lables,3) )
+
+#将文本函数解析成Numpy解析程序
+def file2matrix(filename):
+    fr  = open(filename)
+    arrayOLines = fr.readlines()
+    numberOfLines = len(arrayOLines)
+    returnMat = zeros((numberOfLines,3))
+    classLabelVector = []
+    index = 0
+    for line in arrayOLines:
+        line = line.strip()
+        lineFromLine = line.split('\t')
+        returnMat[index,:] = lineFromLine[0:3]
+        classLabelVector.append(int(lineFromLine[-1]))
+        index +=1
+    return returnMat,classLabelVector
+datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
 
 #归一化特征值
 def autoNorm(dataSet):
     minVals = dataSet.min(0)
+    #其中dataSet.min(0)中的参数0使得函数可以从列中选取最小值，而不是选取当前行的最小值。
     maxVals = dataSet.max(0)
     range = maxVals - minVals
-
-# group,lables = createDataSet()
-# print (classify0([0,0],group,lables,3) )
+    m = dataSet.shape[0]
+    normDataSet = dataSet - tile(minVals,[m,1])
+    normDataSet = normDataSet/tile(range,[m,1])
+    return normDataSet,minVals,range
+#测试
+normMat,minVals,range = autoNorm(datingDataMat)
