@@ -53,10 +53,26 @@ def autoNorm(dataSet):
     minVals = dataSet.min(0)
     #其中dataSet.min(0)中的参数0使得函数可以从列中选取最小值，而不是选取当前行的最小值。
     maxVals = dataSet.max(0)
-    range = maxVals - minVals
+    range1 = maxVals - minVals
     m = dataSet.shape[0]
     normDataSet = dataSet - tile(minVals,[m,1])
-    normDataSet = normDataSet/tile(range,[m,1])
-    return normDataSet,minVals,range
+    normDataSet = normDataSet/tile(range1,[m,1])
+    return normDataSet,minVals,range1
 #测试
-normMat,minVals,range = autoNorm(datingDataMat)
+normMat,minVals,range1 = autoNorm(datingDataMat)
+
+#测试算法：作为完整程序验证分类器
+def datingClassTest():
+    hoRatio =0.10
+    datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')
+    normMat, minVals, range1 = autoNorm(datingDataMat)
+    m = normMat.shape[0]
+    numTestVecs = int(m*hoRatio)
+    errorCount = 0.0
+    for i in range(numTestVecs):
+        classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],3)
+        print ("the classifier came back with: %d ,the real answer is: %d"%(classifierResult,datingLabels[i]))
+        if(classifierResult !=datingLabels[i]): errorCount+=1.0
+    print("the total error rate is: %f"%(errorCount/float(numTestVecs)))
+#测试
+#datingClassTest()
