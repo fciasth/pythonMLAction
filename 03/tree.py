@@ -81,3 +81,22 @@ def majorityCnt(classList):
     return  sortedClassCount[0][0]
 
 #创建树的函数代码
+def createTree(dataSet,labels):
+    classList = [example[-1] for example in dataSet]
+    if classList.count(classList[0] == len(classList)):
+        return classList[0][0]
+    if len(dataSet[0])==1:
+        return majorityCnt(dataSet)
+    bestFeat = chooseBestFeatureToSplit(dataSet)
+    #print(bestFeat)
+    bestFeatLabel = labels[bestFeat]      #最好的特征的列对应的标签
+    myTree = {bestFeatLabel:{}}
+    del(labels[bestFeat])
+    featValues = [example[bestFeat]for example in dataSet]
+    uniqueVals = set(featValues)
+    for value in uniqueVals:
+        subLabels = labels[:]
+        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet,bestFeat,value),subLabels)
+    return myTree
+myTree = createTree(myDat,labels)
+
