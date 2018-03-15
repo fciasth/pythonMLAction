@@ -1,4 +1,5 @@
 from math import log
+import operator
 
 def calcShannonEnt(dataSet):
     #实例总数
@@ -68,4 +69,15 @@ def chooseBestFeatureToSplit(dataSet):
             bestFeature = i
     return bestFeature
 b = chooseBestFeatureToSplit(myDat)
-print(b)
+# print(b)
+#采用多数表决的方法决定该叶子节点的分类。
+def majorityCnt(classList):
+    classCount ={}
+    for vote in classList:
+        if vote not in classCount.keys():
+            classCount[vote] = 0
+        classCount[vote] += 1
+    sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
+    return  sortedClassCount[0][0]
+
+#创建树的函数代码
