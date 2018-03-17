@@ -95,8 +95,8 @@ def createTree(dataSet,labels):
     featValues = [example[bestFeat]for example in dataSet]
     uniqueVals = set(featValues)
     for value in uniqueVals:
-        subLabels = labels[:]
+        subLabels = labels[:] #在Python语言中函数参数是列表类型时，参数是按照引用方式传递的
         myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet,bestFeat,value),subLabels)
     return myTree
 myTree = createTree(myDat,labels)
-
+print(myTree)
