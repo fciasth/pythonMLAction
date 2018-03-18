@@ -30,4 +30,47 @@ def createPlot():
     plotNode('a leaf node', (0.8, 0.1), (0.3, 0.8), leafNode)
     plt.show()
 
-createPlot()
+# createPlot()
+
+#构造注解树
+#获取叶节点的数目和树的层数
+def getNumLeafs(myTree):
+    # 定义叶节点数目
+    numLeafs = 0
+    firstStr = myTree.keys()[0]
+    secondDict = myTree[firstStr]
+    for key in secondDict.keys():
+        #判断子节点是否是字典类型
+        if type(secondDict[key]).__name__=='dict':
+            #递归调用
+            numLeafs += getNumLeafs(secondDict[key])
+        else:
+            numLeafs += 1
+    return numLeafs
+
+#获取树的层数
+def getTreeDepth(myTree):
+    maxDepth = 0
+    firstStr = myTree.keys()[0]
+    secondDict = myTree[firstStr]
+    for key in secondDict.keys():
+        if type(secondDict[key]).__name__ == 'dict':
+            thisDepth = 1 + getTreeDepth(secondDict[key])
+        else:
+            thisDepth = 1
+        if thisDepth>maxDepth:
+            maxDepth = thisDepth
+    return maxDepth
+
+
+
+# 预定义的树，用来测试
+def retrieveTree(i):
+    listOfTree = [{'no surfacing':{ 0:'no',1:{'flippers': \
+                       {0:'no',1:'yes'}}}},
+                   {'no surfacing':{ 0:'no',1:{'flippers': \
+                    {0:{'head':{0:'no',1:'yes'}},1:'no'}}}}
+                  ]
+    return listOfTree[i]
+
+#绘制中间文本
