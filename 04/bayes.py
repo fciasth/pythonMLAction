@@ -42,8 +42,13 @@ def setOfWords2Vec(vocabList,inputSet):#输入参数为词汇表及某个文档
 # print(createVocabList(dataSet))
 listOPosts,listClasses = loadDataSet()
 myVocabList = createVocabList(listOPosts)
-print (myVocabList) #在输出的这个此表中，不会出现重复的词
-print ("\n")
+# print (myVocabList) #在输出的这个此表中，不会出现重复的词
+# print ("\n")
+#
+# Vec = setOfWords2Vec(myVocabList, listOPosts[5])
+# print (Vec)
 
-Vec = setOfWords2Vec(myVocabList, listOPosts[5])
-print (Vec)
+# 条件概率的计算
+def trainNB0(trainMatrix,trainCategory): #输入参数为文档矩阵trainMatrix,文档类别所构成的向量trainCategory
+    #
+    numTrainDocs = len()
