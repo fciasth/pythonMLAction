@@ -1,6 +1,15 @@
 from math import log
 import operator
 
+# 预定义的树，用来测试
+def retrieveTree(i):
+    listOfTree = [{'no surfacing':{ 0:'no',1:{'flippers': \
+                       {0:'no',1:'yes'}}}},
+                   {'no surfacing':{ 0:'no',1:{'flippers': \
+                    {0:{'head':{0:'no',1:'yes'}},1:'no'}}}}
+                  ]
+    return listOfTree[i]
+
 def calcShannonEnt(dataSet):
     #实例总数
     numEntries = len(dataSet)
@@ -98,5 +107,31 @@ def createTree(dataSet,labels):
         subLabels = labels[:] #在Python语言中函数参数是列表类型时，参数是按照引用方式传递的
         myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet,bestFeat,value),subLabels)
     return myTree
-myTree = createTree(myDat,labels)
-print(myTree)
+#myTree = createTree(myDat,labels)
+#print(myTree)
+# 决策树分类函数
+def classify(inputTree,featLabels,testVec):
+    # 得到树中的第一个特征
+    firstSides = list(myTree.keys())
+    firstStr = firstSides[0]
+
+    # 得到第一个对应的值
+    secondDict = inputTree[firstStr]
+
+    featIndex = featLabels.index(firstStr)
+    for key in secondDict.keys():
+        i# 如果在secondDict[key]中找到testVec[featIndex]
+        if testVec[featIndex] == key:
+            # 判断secondDict[key]是否为字典
+            if type(secondDict[key]).__name__ == 'dict':
+                # 若为字典，递归的寻找testVec
+                classLabel = classify(secondDict[key], featLabels, testVec)
+            else:
+                # 若secondDict[key]为标签值，则将secondDict[key]赋给classLabel
+                classLabel = secondDict[key]
+    # 返回类标签
+    return classLabel
+
+myTree = retrieveTree(1)
+a = classify(myTree,labels,[1,1])
+print(a)
