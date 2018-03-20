@@ -109,6 +109,7 @@ def majorityCnt(classList):
     sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
     return  sortedClassCount[0][0]
 
+
 #创建树的函数代码
 def createTree(dataSet,labels):
     classList = [example[-1] for example in dataSet]
