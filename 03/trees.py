@@ -3,12 +3,71 @@ import operator
 
 # 预定义的树，用来测试
 def retrieveTree(i):
-    listOfTree = [{'no surfacing':{ 0:'no',1:{'flippers': \
-                       {0:'no',1:'yes'}}}},
-                   {'no surfacing':{ 0:'no',1:{'flippers': \
-                    {0:{'head':{0:'no',1:'yes'}},1:'no'}}}}
+    listOfTree = [{'no surfacing':{ 0:'no',1:{'flippers': {0:'no',1:'yes'}}}},
+                   {'no surfacing':{ 0:'no',1:{'flippers': {0:{'head':{0:'no',1:'yes'}},1:'no'}}}}
                   ]
     return listOfTree[i]
+
+def createDataSet():
+    dataSet = [[1,1,'maybe'],
+               [1,1,'yes'],
+               [1,0,'no'],
+               [0,1,'no'],
+               [0,1,'no']]
+    labels = ['no Surfacing','flippers']
+    return dataSet,labels
+myDat,labels = createDataSet()
+#计算给定数据集的熵
+def calcShannonEnt(dataSet):
+    #数据集中所给定的实例数目
+    dataSetLen = len(dataSet)#5
+    #数据集中特征数
+    dataSetClassCount = len(dataSet[0])#3
+
+    labelCounts = {}#定义一个空字典
+    #以列作为循环条件
+    for vec in dataSet:
+        #将最后一个值存起来，并判断是否存在空字典中 若不存在 则初始化创建
+        countLabel = vec[-1]
+        if countLabel not in  labelCounts.keys():
+            labelCounts[countLabel] =0
+        labelCounts[countLabel] += 1
+    shannontEnt =0.0
+    for key in labelCounts:
+        prob = float(labelCounts[key])/dataSetLen
+        shannontEnt -= prob*log(prob,2)
+    return shannontEnt
+
+a = calcShannonEnt(myDat)
+print(a)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def calcShannonEnt(dataSet):
     #实例总数
@@ -27,15 +86,8 @@ def calcShannonEnt(dataSet):
         shannonEnt -= prob * log(prob,2)
     return shannonEnt
 
-def createDataSet():
-    dataSet = [[1,1,'maybe'],
-               [1,1,'yes'],
-               [1,0,'no'],
-               [0,1,'no'],
-               [0,1,'no']]
-    labels = ['no Surfacing','flippers']
-    return dataSet,labels
-myDat,labels = createDataSet()
+
+
 # a= calcShannonEnt(myDat)
 # print(a)
 
@@ -132,6 +184,6 @@ def classify(inputTree,featLabels,testVec):
     # 返回类标签
     return classLabel
 
-myTree = retrieveTree(1)
-a = classify(myTree,labels,[1,1])
-print(a)
+# myTree = retrieveTree(1)
+# a = classify(myTree,labels,[1,1])
+# print(a)
