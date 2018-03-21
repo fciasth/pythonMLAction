@@ -50,5 +50,15 @@ myVocabList = createVocabList(listOPosts)
 
 # 条件概率的计算
 def trainNB0(trainMatrix,trainCategory): #输入参数为文档矩阵trainMatrix,文档类别所构成的向量trainCategory
-    #
-    numTrainDocs = len()
+    #计算文档的数目
+    numTrainDocs = len(trainMatrix)
+    print(numTrainDocs)
+    # 计算单词的数目
+    numWords = len(trainMatrix[0])
+
+trainMat = []
+for postinDoc in listOPosts:
+    trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
+print(trainMat)
+trainNB0(array(trainMat),array(listClasses))
+

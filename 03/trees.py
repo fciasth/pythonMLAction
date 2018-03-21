@@ -91,8 +91,10 @@ def calcShannonEnt(dataSet):
 # a= calcShannonEnt(myDat)
 # print(a)
 
+
 #划分数据集
-#三个输入参数：待划分的数据集、划分数据集的特征、需要返回的特征的值
+#dataSet 数据集 axis 划分特征为第几列 value 划分特征的值
+
 def splitDataSet(dataSet,axis,value):
     # Python语言不用考虑内存分配问题。 Python语言在函数中传递的是列表的引用，
     # 在函数内部对列表对象的修改，将会影响该列表对象的整个生存周期。为了消除这
@@ -108,8 +110,25 @@ def splitDataSet(dataSet,axis,value):
             #上面两行就是把作为特征的一列去掉了
             retDataSet.append(reducedFeatVec)
     return retDataSet
-a= splitDataSet(myDat,2,"no")
-#print(a)
+# a= splitDataSet(myDat,2,"no")
+# print(a)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #选择最好的数据集划分方式
 def chooseBestFeatureToSplit(dataSet):
@@ -123,13 +142,14 @@ def chooseBestFeatureToSplit(dataSet):
         for value in uniqueVals:
             subDataSet = splitDataSet(dataSet,i,value)
             prob = len(subDataSet)/float(len(dataSet))
+
             newEntropy += prob*calcShannonEnt(subDataSet)
         infoGain = baseEntropy -newEntropy
         if(infoGain>bestInfoGain):
             bestInfoGain = infoGain
             bestFeature = i
     return bestFeature
-b = chooseBestFeatureToSplit(myDat)
+b = chooseBestFeatureToList(myDat)
 # print(b)
 #采用多数表决的方法决定该叶子节点的分类。
 def majorityCnt(classList):
@@ -140,6 +160,7 @@ def majorityCnt(classList):
         classCount[vote] += 1
     sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
     return  sortedClassCount[0][0]
+
 
 #创建树的函数代码
 def createTree(dataSet,labels):
