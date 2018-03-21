@@ -1,5 +1,12 @@
+#-*- coding: utf-8 -*-
 import matplotlib.pyplot as plt
 
+
+
+def set_ch():
+    from pylab import mpl
+    mpl.rcParams['font.sans-serif'] = ['FangSong'] # 指定默认字体
+    mpl.rcParams['axes.unicode_minus'] = False # 解决保存图像是负号'-'显示为方块的问题</span>
 # 定义决策树决策结果的属性，用字典来定义
 # 下面的字典定义也可写作 decisionNode={boxstyle:'sawtooth',fc:'0.8'}
 # boxstyle为文本框的类型，sawtooth是锯齿形，fc是边框线粗细
@@ -14,10 +21,16 @@ def plotNode(nodeTxt,centerPt,parentPt,nodeType):
     # nodeTxt为要显示的文本，centerPt为文本的中心点，箭头所在的点，parentPt为指向文本的点
     createPlot.ax1.annotate(nodeTxt, xy=parentPt, xycoords='axes fraction', xytext=centerPt, textcoords='axes fraction', \
                             va="center", ha="center", bbox=nodeType, arrowprops=arrow_args)
+def createPlot():
+    fig = plt.figure(1,facecolor='white')
+    fig.clf()
+    createPlot.ax1 = plt.subplot(111,frameon = False)#无边框
+    plotNode('决策节点',(0.5,0.1),(0.1,0.5),decisionNode)
+    plotNode('叶节点',(0.8,0.1),(0.3,0.8),leafNode)
+    plt.show()
 
-
-
-# createPlot()
+set_ch()
+#createPlot()
 
 #构造注解树
 #获取叶节点的数目和树的层数
@@ -119,10 +132,10 @@ def createPlot(inTree):
     # plotTree.totalD保存的是树的高
     plotTree.totalD = float(getTreeDepth(inTree))
     # 决策树起始横坐标
-    plotTree.xOff = -0.5/plotTree.totalW;
-    plotTree.yOff = 1.0;
+    plotTree.xOff = -0.5/plotTree.totalW
+    plotTree.yOff = 1.0
     plotTree(inTree,(0.5,1.0),'')
     plt.show()
 
-myTree = retrieveTree(0)
-createPlot(myTree)
+# myTree = retrieveTree(0)
+# createPlot(myTree)
