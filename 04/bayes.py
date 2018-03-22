@@ -27,7 +27,6 @@ def createVocabList(dataSet):
 
     for document in dataSet:
         vocabSet = vocabSet | set(document)
-
     return  list(vocabSet)
 
 def setOfWords2Vec(vocabList,inputSet):#输入参数为词汇表及某个文档
@@ -42,7 +41,8 @@ def setOfWords2Vec(vocabList,inputSet):#输入参数为词汇表及某个文档
 # print(createVocabList(dataSet))
 listOPosts,listClasses = loadDataSet()
 myVocabList = createVocabList(listOPosts)
-# print (myVocabList) #在输出的这个此表中，不会出现重复的词
+
+#在输出的这个此表中，不会出现重复的词
 # print ("\n")
 #
 # Vec = setOfWords2Vec(myVocabList, listOPosts[5])
@@ -52,13 +52,14 @@ myVocabList = createVocabList(listOPosts)
 def trainNB0(trainMatrix,trainCategory): #输入参数为文档矩阵trainMatrix,文档类别所构成的向量trainCategory
     #计算文档的数目
     numTrainDocs = len(trainMatrix)
-    print(numTrainDocs)
+
     # 计算单词的数目
     numWords = len(trainMatrix[0])
 
 trainMat = []
 for postinDoc in listOPosts:
+    #把上面那个数据去重了
     trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
-print(trainMat)
+
 trainNB0(array(trainMat),array(listClasses))
 
