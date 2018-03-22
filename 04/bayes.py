@@ -27,6 +27,7 @@ def createVocabList(dataSet):
 
     for document in dataSet:
         vocabSet = vocabSet | set(document)
+
     return  list(vocabSet)
 
 def setOfWords2Vec(vocabList,inputSet):#输入参数为词汇表及某个文档
@@ -41,25 +42,62 @@ def setOfWords2Vec(vocabList,inputSet):#输入参数为词汇表及某个文档
 # print(createVocabList(dataSet))
 listOPosts,listClasses = loadDataSet()
 myVocabList = createVocabList(listOPosts)
-
-#在输出的这个此表中，不会出现重复的词
+# print (myVocabList) #在输出的这个此表中，不会出现重复的词
 # print ("\n")
 #
 # Vec = setOfWords2Vec(myVocabList, listOPosts[5])
 # print (Vec)
 
 # 条件概率的计算
-def trainNB0(trainMatrix,trainCategory): #输入参数为文档矩阵trainMatrix,文档类别所构成的向量trainCategory
-    #计算文档的数目
-    numTrainDocs = len(trainMatrix)
-
-    # 计算单词的数目
-    numWords = len(trainMatrix[0])
+def trainNB0(trainMatrix,trainCategory):  #输入为文档矩阵及对应的标签向量
+    numTrainDocs = len(trainMatrix) #文档数
+    numWords = len(trainMatrix[0])  #词汇表长度
+    pAbusive = sum(trainCategory)/float(numTrainDocs) #属于侮辱性文档的概率
+    p0Num = ones(numWords); p1Num = ones(numWords)      #长度为词汇表大小的0向量
+    p0Denom = 2.0; p1Denom = 2.0
+    for i in range(numTrainDocs):
+        if trainCategory[i] == 1:   #如果第i个文档是侮辱性文档
+            p1Num += trainMatrix[i] #所有侮辱性文档词向量累加，每个分量就是该词的频数
+            p1Denom += sum(trainMatrix[i])  # 所有侮辱性文档 词总数
+        else:
+            p0Num += trainMatrix[i]
+            p0Denom += sum(trainMatrix[i])
+    p1Vect = p1Num/p1Denom #向量除以浮点数
+    p0Vect = p0Num/p0Denom
+    return p0Vect,p1Vect,pAbusive
 
 trainMat = []
 for postinDoc in listOPosts:
-    #把上面那个数据去重了
     trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
 
-trainNB0(array(trainMat),array(listClasses))
+p0v,p1v,pAb =trainNB0(array(trainMat),array(listClasses))
+# print(p0v)
 
+def classifyNB(vec2Classify,p0Vec,p1Vec,pClass1):
+    p1 = sum(vec2Classify*p1Vec) + log(pClass1)
+    p0 = sum(vec2Classify*p0Vec) + log(1.0-pClass1)
+    if p1>p0:
+        return 1
+    else:
+        return 0
+
+def testingNB():
+    listOPosts,listClasses = loadDataSet()
+    myVocabList = createVocabList(listOPosts)
+    trainMat=[]
+    for postinDoc in listOPosts:
+        trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
+    p0V,p1V,pAb = trainNB0(array(trainMat),array(listClasses))
+    testEntry = ['love', 'my', 'dalmation']
+    thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
+    testEntry = ['stupid', 'garbage']
+    thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
+testingNB()
+
+def bagOfWord2VecMN(vocabList,inputSet):
+    returnVect = [0]*len(vocabList)
+    for word in inputSet:
+        returnVect[vocabList.index(word)] +=1
+    return returnVect
